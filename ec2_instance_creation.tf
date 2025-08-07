@@ -70,8 +70,10 @@ resource aws_instance terraform_ec2_instance {
     
     key_name = aws_key_pair.terraform_key.key_name
     vpc_security_group_ids = [aws_security_group.default_sg.id]
-    ami = "ami-01f23391a59163da9" # ubuntu ami image id
-    instance_type = "t2.micro"
+    ami = var.ec2_ami_id
+    instance_type = var.ec2_instance_type
+
+    user_data = file("install.sh")
 
 
     # confiure a storage 
@@ -80,8 +82,8 @@ resource aws_instance terraform_ec2_instance {
     }
     
     root_block_device {
-        volume_size = 8
-        volume_type = "gp3"
+        volume_size = var.root_volume_size
+        volume_type = var.root_volume_type
         delete_on_termination = true
     }
 
