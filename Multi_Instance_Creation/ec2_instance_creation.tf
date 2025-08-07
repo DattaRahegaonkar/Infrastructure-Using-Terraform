@@ -1,4 +1,3 @@
-
 # key-pair for login
 
 resource aws_key_pair terraform_key {
@@ -68,11 +67,23 @@ resource aws_security_group default_sg {
 
 resource aws_instance terraform_ec2_instance {
 
-    count = 2                                            # meta argument to create multiple instances    
+    # count meta argument to create multiple instances with same instance name
+    # count = 2
+
+    # for_each meta argument to create multiple instances with different instance names
+    for_each = tomap({
+        "terraform-ec2-t2.micro" = "t2.micro",
+        "terraform-ec2-t3.micro" = "t3.micro",
+    })
+
+    # This meta-argument defines that a particular resource will not be created or modified
+    # until the resources it depends on are fully created or updated successfully.
+    depends_on = [aws_key_pair.terraform_key, aws_security_group.default_sg, aws_default_vpc.default]
+
     key_name = aws_key_pair.terraform_key.key_name
     vpc_security_group_ids = [aws_security_group.default_sg.id]
     ami = var.ec2_ami_id
-    instance_type = var.ec2_instance_type
+    instance_type = each.value
 
     user_data = file("install.sh")
 
@@ -89,6 +100,6 @@ resource aws_instance terraform_ec2_instance {
     }
 
     tags = {
-        Name = "Terraform EC2 Instance"
+        Name = each.key
     }
 }
