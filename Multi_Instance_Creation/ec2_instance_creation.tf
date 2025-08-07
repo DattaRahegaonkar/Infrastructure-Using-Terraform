@@ -88,13 +88,15 @@ resource aws_instance terraform_ec2_instance {
     user_data = file("install.sh")
 
 
-    # confiure a storage 
+    # configure a storage
     volume_tags = {
         Name = "Terraform EC2 Volume"
     }
     
     root_block_device {
-        volume_size = var.root_volume_size
+        # Using a conditional expression(Ternary Operator) we can set the volume size based on the environment variable
+        volume_size = var.environment == "prod" ? 10 : var.root_volume_size   
+
         volume_type = var.root_volume_type
         delete_on_termination = true
     }
