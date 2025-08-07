@@ -1,1 +1,0 @@
-# Mutli Region Resource Creation
