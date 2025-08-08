@@ -76,7 +76,7 @@ resource aws_instance terraform_ec2_instance {
     user_data = file("install.sh")
 
 
-    # confiure a storage 
+    # configure a storage 
     volume_tags = {
         Name = "Terraform EC2 Volume"
     }
