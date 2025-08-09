@@ -18,6 +18,6 @@ variable root_volume_type {
 
 variable "environment" {
   description = "The environment for the EC2 instances (e.g., dev, staging, prod)."
-  default     = "prod"
+  default     = "dev"
   type        = string
 }
