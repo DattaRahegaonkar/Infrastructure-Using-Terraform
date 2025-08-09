@@ -72,8 +72,8 @@ resource aws_instance terraform_ec2_instance {
 
     # for_each meta argument to create multiple instances with different instance names
     for_each = tomap({
-        "terraform-ec2-t2.micro" = "t2.micro",
-        "terraform-ec2-t3.micro" = "t3.micro",
+        "terraform-ec2-t2.micro-dev" = "t2.micro",
+        "terraform-ec2-t3.micro-dev" = "t3.micro"
     })
 
     # This meta-argument defines that a particular resource will not be created or modified
@@ -95,7 +95,7 @@ resource aws_instance terraform_ec2_instance {
     
     root_block_device {
         # Using a conditional expression(Ternary Operator) we can set the volume size based on the environment variable
-        volume_size = var.environment == "prod" ? 10 : var.root_volume_size   
+        volume_size = var.env == "prod" ? 10 : var.root_volume_size   
 
         volume_type = var.root_volume_type
         delete_on_termination = true
@@ -103,5 +103,6 @@ resource aws_instance terraform_ec2_instance {
 
     tags = {
         Name = each.key
+        environment = var.env
     }
 }
