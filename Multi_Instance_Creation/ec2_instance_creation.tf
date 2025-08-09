@@ -1,7 +1,7 @@
 # key-pair for login
 
 resource aws_key_pair terraform_key {
-    key_name   = "terraform_key"
+    key_name   = "${var.env}_terraform_key"
     public_key = file("terraform-ec2-key.pub")
 }
 
@@ -17,7 +17,7 @@ resource aws_default_vpc default {
 
 resource aws_security_group default_sg {
 
-    name = "default_sg"
+    name = "${var.env}_default_sg"
     description = "Default security group for the instance"
     vpc_id = aws_default_vpc.default.id
 
@@ -94,7 +94,7 @@ resource aws_instance terraform_ec2_instance {
     
     root_block_device {
         # Using a conditional expression(Ternary Operator) we can set the volume size based on the environment variable
-        volume_size = var.environment == "dev" ? 10 : var.root_volume_size   
+        volume_size = var.env == "dev" ? 10 : var.root_volume_size   
 
         volume_type = var.root_volume_type
         delete_on_termination = true
