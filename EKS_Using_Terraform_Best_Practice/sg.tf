@@ -124,6 +124,7 @@ resource "aws_security_group_rule" "node_ingress_from_cluster" {
   source_security_group_id = aws_security_group.eks_cluster_sg.id
 }
 
+# Allow load balancer to communicate with nodes on port 80
 resource "aws_security_group_rule" "node_ingress_from_lb" {
   type                     = "ingress"
   from_port                = 80

@@ -22,7 +22,7 @@ resource "aws_route_table_association" "public_route_table_association_1a" {
     for_each = aws_subnet.public_subnet
 
     subnet_id = each.value.id
-    route_table_id = aws_route_table.public_route_table[each.key].id
+    route_table_id = aws_route_table.public_route_table.id
 
 }
 
@@ -39,8 +39,8 @@ resource "aws_route_table" "private" {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = lookup(
       {
-        "1a" = aws_nat_gateway.nat_gateway[0].id
-        "1b" = aws_nat_gateway.nat_gateway[1].id
+        "1a" = aws_nat_gateway.nat_gateway["1a"].id
+        "1b" = aws_nat_gateway.nat_gateway["1b"].id
       },
       each.key
     )
