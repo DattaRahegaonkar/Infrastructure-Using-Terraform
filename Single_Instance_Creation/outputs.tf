@@ -11,3 +11,4 @@ output "private_ip" {
 output "public_dns" {
   value = aws_instance.terraform_ec2_instance.public_dns
 }
+
